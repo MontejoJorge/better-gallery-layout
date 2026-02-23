@@ -3,7 +3,7 @@ import {
 	useBlockProps,
 	MediaPlaceholder,
 	BlockControls,
-	BlockAlignmentToolbar,
+	MediaReplaceFlow,
 } from "@wordpress/block-editor";
 import type { BlockEditProps } from "@wordpress/blocks";
 
@@ -26,50 +26,72 @@ export default function Edit({
 		setAttributes({ images });
 	};
 
+	const hasImages = attributes.images.length > 0;
+	const hasImageIds =
+		hasImages && attributes.images.some((image) => !!image.id);
+
 	return (
 		<div {...useBlockProps()}>
-			<div
-				style={{
-					display: "grid",
-					gridTemplateColumns: "repeat(auto-fill, minmax(120px, 160px))",
-					gap: "10px",
-					justifyContent: "center",
-				}}
-			>
-				{attributes.images.map((i) => (
-					<div
-						key={i.id}
-						style={{
-							width: 150,
-							height: 150,
-							backgroundColor: "#f0f0f0",
-							overflow: "hidden",
-							borderRadius: 4,
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "center",
-						}}
-					>
-						<img
-							src={i.sizes?.medium?.url || i.url}
-							alt={i.alt}
+			{hasImages && (
+				<BlockControls group="other">
+					<MediaReplaceFlow
+						allowedTypes={["image"]}
+						onSelect={onSelectImages}
+						name={__("Add")}
+						multiple
+						mediaIds={attributes.images
+							.filter((image) => image.id)
+							.map((image) => image.id)}
+						addToGallery={hasImageIds}
+						variant="toolbar"
+					/>
+				</BlockControls>
+			)}
+			{hasImages ? (
+				<div
+					style={{
+						display: "grid",
+						gridTemplateColumns: "repeat(auto-fill, 150px)",
+						gap: "10px",
+						justifyContent: "center",
+					}}
+				>
+					{attributes.images.map((i) => (
+						<div
+							key={i.id}
 							style={{
-								maxWidth: "100%",
-								maxHeight: "100%",
-								objectFit: "contain",
+								width: 150,
+								height: 150,
+								backgroundColor: "#f0f0f0",
+								overflow: "hidden",
+								borderRadius: 4,
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "center",
 							}}
-						/>
-					</div>
-				))}
-			</div>
-			<MediaPlaceholder
-				icon="format-gallery"
-				onSelect={onSelectImages}
-				accept="image/*"
-				allowedTypes={["image"]}
-				multiple
-				value={attributes.images.map((image) => image.id)}
-			/>
+						>
+							<img
+								src={i.sizes?.medium?.url || i.url}
+								alt={i.alt}
+								style={{
+									maxWidth: "100%",
+									maxHeight: "100%",
+									objectFit: "contain",
+								}}
+							/>
+						</div>
+					))}
+				</div>
+			) : (
+				<MediaPlaceholder
+					icon="format-gallery"
+					onSelect={onSelectImages}
+					accept="image/*"
+					allowedTypes={["image"]}
+					multiple
+					value={attributes.images.map((image) => image.id)}
+				/>
+			)}
 			<Inspector attributes={attributes} setAttributes={setAttributes} />
 		</div>
 	);

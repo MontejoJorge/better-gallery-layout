@@ -6,7 +6,7 @@
 	"title": "Better Gallery",
 	"category": "media",
 	"icon": "format-gallery",
-	"description": "A gallery, but better",
+	"description": "A gallery, but better.",
 	"example": {},
 	"supports": {
 		"html": false,
