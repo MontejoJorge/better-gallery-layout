@@ -84,7 +84,6 @@ function computeJustifiedLayout(
 
 function renderGallery(container: HTMLElement) {
   const images: WPImage[] = JSON.parse(container.dataset.images ?? '[]');
-  console.log(images);
   const gap = Number(container.dataset.gap ?? 5);
   const targetRowHeight = Number(container.dataset.targetRowHeight ?? 200);
   const containerWidth = container.clientWidth;
@@ -96,28 +95,27 @@ function renderGallery(container: HTMLElement) {
     gap,
   );
 
-  container.innerHTML = layout
-    .map(
-      (row, rowIndex) => `
-        <div style="display:flex; justify-content:flex-start; gap:${gap}px;${rowIndex < layout.length - 1 ? ` margin-bottom:${gap}px;` : ''}">
-            ${row
-              .map((item) => {
-                const widthStyle = item.fixedWidth
-                  ? `width:${item.fixedWidth}px`
-                  : `width:${item.widthPercent}%`;
-                return `
-                        <img
-                            src="${item.image.url}"
-                            alt="${item.image.alt ?? ''}"
-                            style="${widthStyle}; height:${item.height}px; object-fit:cover; object-position:center; display:block;"
-                        />
-                    `;
-              })
-              .join('')}
-        </div>
-    `,
-    )
-    .join('');
+  container.style.setProperty('--better-gallery-gap', `${gap}px`);
+  container.innerHTML = '';
+
+  layout.forEach((row) => {
+    const rowEl = document.createElement('div');
+    rowEl.className = 'better-gallery-row';
+
+    row.forEach((item) => {
+      const img = document.createElement('img');
+      img.src = item.image.url;
+      img.alt = item.image.alt ?? '';
+      img.className = 'better-gallery-image';
+      img.style.width = item.fixedWidth
+        ? `${item.fixedWidth}px`
+        : `${item.widthPercent}%`;
+      img.style.height = `${item.height}px`;
+      rowEl.appendChild(img);
+    });
+
+    container.appendChild(rowEl);
+  });
 }
 
 document

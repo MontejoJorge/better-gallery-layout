@@ -1,3 +1,21 @@
 .wp-block-create-block-better-gallery {
   padding: 2px;
 }
+
+.better-gallery-frontend {
+  .better-gallery-row {
+    display: flex;
+    justify-content: flex-start;
+    gap: var(--better-gallery-gap);
+
+    &:not(:last-child) {
+      margin-bottom: var(--better-gallery-gap);
+    }
+  }
+
+  .better-gallery-image {
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+}
