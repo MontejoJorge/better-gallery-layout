@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag / version (e.g. v1.0.0)"
+        required: true
+        type: string
+
+jobs:
+  quality_checks:
+    name: Quality checks
+    uses: ./.github/workflows/__quality_checks.yml
+    with:
+      commit: ${{ github.sha }}
+
+  build:
+    name: Build & Release
+    runs-on: ubuntu-latest
+    needs: quality_checks
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Create plugin zip
+        run: pnpm run plugin-zip
+
+      - name: Rename zip with tag
+        run: mv better-gallery-layout.zip better-gallery-layout-${{ github.event.inputs.tag || github.ref_name }}.zip
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
+          files: better-gallery-layout-${{ github.event.inputs.tag || github.ref_name }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
