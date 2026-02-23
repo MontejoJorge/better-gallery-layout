@@ -21,5 +21,5 @@
  */
 
 /* eslint-disable no-console */
-console.log( 'Hello World! (from create-block-better-gallery-2 block)' );
+console.log( 'Hello World! (from create-block-better-gallery block)' );
 /* eslint-enable no-console */

@@ -33,8 +33,8 @@ export default function Edit() {
 	return (
 		<p { ...useBlockProps() }>
 			{ __(
-				'Better Gallery 2 – hello from the editor!',
-				'better-gallery-2'
+				'Better Gallery - hello from the editor!',
+				'better-gallery'
 			) }
 		</p>
 	);

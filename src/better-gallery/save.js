@@ -18,7 +18,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 export default function save() {
 	return (
 		<p { ...useBlockProps.save() }>
-			{ 'Better Gallery 2 – hello from the saved content!' }
+			{ 'Better Gallery - hello from the saved content!' }
 		</p>
 	);
 }
