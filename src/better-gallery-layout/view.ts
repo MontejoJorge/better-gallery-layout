@@ -83,7 +83,12 @@ function computeJustifiedLayout(
 }
 
 function renderGallery(container: HTMLElement) {
-  const images: WPImage[] = JSON.parse(container.dataset.images ?? '[]');
+  const imgElements =
+    container.querySelectorAll<HTMLImageElement>('img[data-image]');
+  const images: WPImage[] = Array.from(imgElements).map((img) =>
+    JSON.parse(img.dataset.image ?? '{}'),
+  );
+
   const gap = Number(container.dataset.gap ?? 5);
   const targetRowHeight = Number(container.dataset.targetRowHeight ?? 200);
   const containerWidth = container.clientWidth;
@@ -96,7 +101,12 @@ function renderGallery(container: HTMLElement) {
   );
 
   container.style.setProperty('--better-gallery-layout-gap', `${gap}px`);
-  container.innerHTML = '';
+
+  container
+    .querySelectorAll('.better-gallery-layout-row')
+    .forEach((el) => el.remove());
+
+  imgElements.forEach((img) => (img.style.display = 'none'));
 
   layout.forEach((row) => {
     const rowEl = document.createElement('div');
@@ -104,7 +114,22 @@ function renderGallery(container: HTMLElement) {
 
     row.forEach((item) => {
       const img = document.createElement('img');
+
+      const srcsetParts: string[] = [];
+      if (item.image.sizes) {
+        Object.entries(item.image.sizes).forEach(([key, size]) => {
+          if (size?.url && size?.width) {
+            srcsetParts.push(`${size.url} ${size.width}w`);
+          }
+        });
+      }
+
       img.src = item.image.url;
+      if (srcsetParts.length > 0) {
+        img.srcset = srcsetParts.join(', ');
+        img.sizes = `${item.fixedWidth ? `${item.fixedWidth}px` : `${item.widthPercent}vw`}`;
+      }
+
       img.alt = item.image.alt ?? '';
       img.className = 'better-gallery-layout-image';
       img.style.width = item.fixedWidth
@@ -122,7 +147,6 @@ document
   .querySelectorAll<HTMLElement>('.better-gallery-layout-frontend')
   .forEach((container) => {
     renderGallery(container);
-
     const observer = new ResizeObserver(() => renderGallery(container));
     observer.observe(container);
   });

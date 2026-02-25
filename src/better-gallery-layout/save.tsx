@@ -5,15 +5,35 @@ import type { BlockAttributes } from './types';
 export default function save({
   attributes,
 }: BlockSaveProps<BlockAttributes>): JSX.Element {
+  const getSmallestImageUrl = (image: any): string => {
+    const sizes = image.sizes || {};
+    return (
+      sizes.thumbnail?.url ||
+      sizes.medium?.url ||
+      sizes.medium_large?.url ||
+      sizes.large?.url ||
+      image.url
+    );
+  };
+
   return (
     <div {...useBlockProps.save()}>
       {attributes.images?.length > 0 && (
         <div
           className="better-gallery-layout-frontend"
-          data-images={JSON.stringify(attributes.images)}
           data-gap={attributes.gap}
           data-target-row-height={attributes.targetRowHeight}
-        />
+        >
+          {attributes.images.map((image, index) => (
+            <img
+              key={image.id || index}
+              src={getSmallestImageUrl(image)}
+              alt={image.alt || ''}
+              data-image={JSON.stringify(image)}
+              loading="lazy"
+            />
+          ))}
+        </div>
       )}
     </div>
   );
