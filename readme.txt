@@ -1,4 +1,4 @@
-=== Better Gallery Layout ===
+=== Jorgemon Gallery Layout ===
 Contributors: montejojorge
 Tags: gallery, photos, justified, responsive
 Requires at least: 6.9
@@ -13,6 +13,8 @@ A gallery block that displays your photos in a beautiful justified layout.
 == Description ==
 
 A WordPress block that displays your photos in a beautiful justified layout — each row fills the full width while keeping every image's original proportions, just like Google Photos.
+
+**GitHub Repository:** [https://github.com/MontejoJorge/jorgemon-gallery-layout](https://github.com/MontejoJorge/jorgemon-gallery-layout)
 
 == Changelog ==
 

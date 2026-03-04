@@ -1,9 +1,9 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "create-block/better-gallery-layout",
+  "name": "create-block/jorgemon-gallery-layout",
   "version": "0.1.0",
-  "title": "Better Gallery Layout",
+  "title": "Jorgemon Gallery Layout",
   "category": "media",
   "icon": "format-gallery",
   "description": "A gallery, with a justified layout.",
@@ -12,7 +12,7 @@
     "html": false,
     "align": ["wide", "full"]
   },
-  "textdomain": "better-gallery-layout",
+  "textdomain": "jorgemon-gallery-layout",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
   "style": "file:./style-index.css",

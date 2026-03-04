@@ -46,13 +46,10 @@ jobs:
       - name: Create plugin zip
         run: pnpm run plugin-zip
 
-      - name: Rename zip with tag
-        run: mv better-gallery-layout.zip better-gallery-layout-${{ github.event.inputs.tag || github.ref_name }}.zip
-
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.tag || github.ref_name }}
-          files: better-gallery-layout-${{ github.event.inputs.tag || github.ref_name }}.zip
+          files: jorgemon-gallery-layout.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

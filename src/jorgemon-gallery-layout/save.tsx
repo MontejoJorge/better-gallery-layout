@@ -20,7 +20,7 @@ export default function save({
     <div {...useBlockProps.save()}>
       {attributes.images?.length > 0 && (
         <div
-          className="better-gallery-layout-frontend"
+          className="jorgemon-gallery-layout-frontend"
           data-gap={attributes.gap}
           data-target-row-height={attributes.targetRowHeight}
           data-border-radius={attributes.radius}
