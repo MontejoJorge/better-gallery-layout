@@ -3,7 +3,7 @@
  * Plugin Name:       Jorgemon Gallery Layout
  * Description:       A gallery block with justified layout.
  * Plugin URI:        https://github.com/MontejoJorge/jorgemon-gallery-layout
- * Version:           0.1.0
+ * Version:           0.2.0
  * Requires at least: 6.9
  * Requires PHP:      7.4
  * Author:            MontejoJorge
